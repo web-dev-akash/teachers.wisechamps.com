@@ -23,6 +23,7 @@ export const Dashboard = ({ setMode }) => {
         <Card
           onClick={() => setMode("reports")}
           transition={"0.5s ease"}
+          cursor={"pointer"}
           border={"2px solid rgba(129, 140, 248)"}
           _hover={{
             border: "2px solid rgba(129, 140, 248)",
