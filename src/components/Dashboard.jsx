@@ -65,7 +65,7 @@ export const Dashboard = ({ setMode }) => {
             </Stack>
           </CardBody>
         </Card>
-        {/* <Card
+        <Card
           margin={"0 auto"}
           onClick={() => setMode("attendance")}
           width={["96%", "96%", "50%", "50%"]}
@@ -109,7 +109,7 @@ export const Dashboard = ({ setMode }) => {
               </Box>
             </Stack>
           </CardBody>
-        </Card> */}
+        </Card>
       </Flex>
     </ChakraProvider>
   );
