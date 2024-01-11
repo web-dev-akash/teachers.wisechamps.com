@@ -59,7 +59,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
       >
         <Heading
           margin={"0 0 20px 0"}
-          fontSize={["20px", "20px", "35px", "35px"]}
+          fontSize={["20px", "20px", "30px", "30px"]}
         >
           Attendance Form
         </Heading>
@@ -143,13 +143,14 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
             </FormControl>
             <Input
               onClick={() => handleFormSubmit(form, userid)}
-              width={["100%", "20%", "20%", "20%"]}
+              width={["100%", "120px", "120px", "120px"]}
               type="submit"
               placeholder="Submit"
-              marginTop={"30px"}
+              marginTop={"10px"}
               cursor={"pointer"}
               bg={"rgba(129, 140, 248)"}
               color={"white"}
+              height={"50px"}
               transition={"0.5s ease"}
               border={"2px solid transparent"}
               _hover={{
