@@ -50,8 +50,9 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
     <ChakraProvider disableGlobalStyle={true}>
       <Header />
       <Box
+        marginTop={["4rem", "4rem", "2rem", "2rem", "2rem"]}
         width={["90%", "90%", "100%", "100%"]}
-        maxWidth={"900px"}
+        maxWidth={"800px"}
         borderRadius={"20px"}
         boxShadow={"rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}
         padding={["2rem", "3rem 2rem", "3rem", "3rem"]}
