@@ -80,7 +80,7 @@ export const Main = () => {
     );
   }
 
-  if (error || mode.includes("internalservererror")) {
+  if (error || mode.includes("internalservererror") || mode === "error") {
     return (
       <div>
         <h1>Something Went Wrong. Please Refresh</h1>
@@ -108,6 +108,35 @@ export const Main = () => {
     );
   }
 
+  if (mode === "nosession") {
+    return (
+      <div className="email-not-found">
+        <p>
+          The entered Vevox Session ID is not Valid <br />
+          Please use a valid Vevox Session ID and try again
+        </p>
+        <div
+          style={{
+            marginTop: "10px",
+          }}
+        >
+          <button id="submit-btn" onClick={() => setMode("attendance")}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (mode === "success") {
+    return (
+      <div className="email-not-found">
+        <h1>Thank You</h1>
+        <p>Your attendance has been marked successfully!</p>
+      </div>
+    );
+  }
+
   if (mode === "user") {
     return <Dashboard setMode={setMode} />;
   }
@@ -124,7 +153,14 @@ export const Main = () => {
   }
 
   if (mode === "attendance") {
-    return <Attendance />;
+    return (
+      <Attendance
+        setError={setError}
+        setMode={setMode}
+        setLoading={setLoading}
+        userid={user.id}
+      />
+    );
   }
 
   if (mode === "noreport") {

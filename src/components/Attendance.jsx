@@ -10,13 +10,14 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Header } from "./Header";
+import axios from "axios";
 
-export const Attendance = () => {
+export const Attendance = ({ setLoading, setError, setMode, userid }) => {
   const [form, setForm] = useState({
-    sessionId: 0,
-    zoom: 0,
-    vevox: 0,
-    explanation: 0,
+    vevoxId: "0",
+    zoom: "0",
+    vevox: "0",
+    explanation: "0",
   });
 
   const handleAttendanceForm = async (e) => {
@@ -26,7 +27,26 @@ export const Attendance = () => {
     setForm({ ...form, [name]: value });
   };
 
-  console.log(form);
+  const handleFormSubmit = async (formData, userid) => {
+    try {
+      setLoading(true);
+      const url = `https://backend.wisechamps.com/teachers/attendance`;
+      const res = await axios.post(url, {
+        contactId: userid,
+        vevoxId: formData.vevoxId,
+        zoom: formData.zoom,
+        vevox: formData.vevox,
+        explanation: formData.explanation,
+      });
+      const mode = res.data.mode;
+      setMode(mode);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+      console.log(error);
+    }
+  };
 
   return (
     <ChakraProvider disableGlobalStyle={true}>
@@ -47,11 +67,13 @@ export const Attendance = () => {
         <Box>
           <form>
             <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
-              <FormLabel>Vevox Session ID</FormLabel>
+              <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
+                Vevox Session ID
+              </FormLabel>
               <Input
                 onChange={handleAttendanceForm}
                 type="number"
-                name="sessionId"
+                name="vevoxId"
                 border={"1px solid #8b8b8b"}
                 _focus={{
                   outline: "none",
@@ -64,7 +86,9 @@ export const Attendance = () => {
               />
             </FormControl>
             <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
-              <FormLabel>Zoom Meeting Strength</FormLabel>
+              <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
+                Zoom Meeting Strength
+              </FormLabel>
               <Input
                 onChange={handleAttendanceForm}
                 type="number"
@@ -81,7 +105,9 @@ export const Attendance = () => {
               />
             </FormControl>
             <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
-              <FormLabel>Vevox Strength</FormLabel>
+              <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
+                Vevox Strength
+              </FormLabel>
               <Input
                 onChange={handleAttendanceForm}
                 type="number"
@@ -98,7 +124,9 @@ export const Attendance = () => {
               />
             </FormControl>
             <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
-              <FormLabel>Explanation Meeting Strength</FormLabel>
+              <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
+                Explanation Meeting Strength
+              </FormLabel>
               <Input
                 onChange={handleAttendanceForm}
                 type="number"
@@ -115,6 +143,7 @@ export const Attendance = () => {
               />
             </FormControl>
             <Input
+              onClick={() => handleFormSubmit(form, userid)}
               width={["100%", "20%", "20%", "20%"]}
               type="submit"
               placeholder="Submit"
