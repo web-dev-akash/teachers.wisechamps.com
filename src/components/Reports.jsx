@@ -264,16 +264,16 @@ export const Reports = ({ setMode, mode }) => {
                   <Tr height={"50px"}>
                     <Th fontSize={"15px"}>S.No.</Th>
                     <Th fontSize={"15px"}>Student Name</Th>
-                    <Th fontSize={"15px"}>Email</Th>
+                    <Th fontSize={"15px"}>Student ID</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {report?.length > 0
-                    ? report.map(({ Email, Student_Name }, index) => (
-                        <Tr key={Email}>
+                    ? report.map(({ Student_ID, Student_Name }, index) => (
+                        <Tr key={Student_ID}>
                           <Td>{index + 1}</Td>
                           <Td textTransform={"capitalize"}>{Student_Name}</Td>
-                          <Td textTransform={"lowercase"}>{Email}</Td>
+                          <Td>{Student_ID}</Td>
                         </Tr>
                       ))
                     : null}

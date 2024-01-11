@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Dashboard } from "./Dashboard";
 import { Header } from "./Header";
 import { Reports } from "./Reports";
+import { Attendance } from "./Attendance";
 
 export const Main = () => {
   const query = new URLSearchParams(window.location.search);
@@ -120,6 +121,10 @@ export const Main = () => {
         setError={setError}
       />
     );
+  }
+
+  if (mode === "attendance") {
+    return <Attendance />;
   }
 
   if (mode === "noreport") {

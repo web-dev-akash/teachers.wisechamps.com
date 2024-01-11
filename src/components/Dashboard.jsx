@@ -19,8 +19,11 @@ export const Dashboard = ({ setMode }) => {
       <Flex
         gap={[5, 5, 5, 10]}
         flexDirection={["column", "column", "row", "row"]}
+        marginTop={["150px", "150px", 0, 0]}
       >
         <Card
+          margin={"0 auto"}
+          width={["96%", "96%", "50%", "50%"]}
           onClick={() => setMode("reports")}
           transition={"0.5s ease"}
           cursor={"pointer"}
@@ -63,6 +66,9 @@ export const Dashboard = ({ setMode }) => {
           </CardBody>
         </Card>
         {/* <Card
+          margin={"0 auto"}
+          onClick={() => setMode("attendance")}
+          width={["96%", "96%", "50%", "50%"]}
           transition={"0.5s ease"}
           border={"2px solid rgba(129, 140, 248)"}
           _hover={{
@@ -71,33 +77,34 @@ export const Dashboard = ({ setMode }) => {
           }}
         >
           <CardHeader>
-            <Heading size="md">Attendence</Heading>
+            <Heading size="md">Attendance</Heading>
           </CardHeader>
 
           <CardBody>
             <Stack divider={<StackDivider />} spacing="4">
               <Box>
                 <Heading size="xs" textTransform="uppercase">
-                  Summary
+                  Fill Details
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  View a summary of all your clients over the last month.
+                  Fill all the required details like Zoom, Vevox and Explation
+                  Strength
                 </Text>
               </Box>
               <Box>
                 <Heading size="xs" textTransform="uppercase">
-                  Overview
+                  Vevox Session ID
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  Check out the overview of your clients.
+                  Enter the Vevox Session ID for today's quiz
                 </Text>
               </Box>
               <Box>
                 <Heading size="xs" textTransform="uppercase">
-                  Analysis
+                  Submit
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  See a detailed analysis of all your business clients.
+                  Submit the Attendance
                 </Text>
               </Box>
             </Stack>
