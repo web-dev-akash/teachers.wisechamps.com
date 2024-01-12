@@ -66,3 +66,6 @@
   box-shadow: 0 0 0 5px rgb(129 140 248 / 30%);
   background-color: #f5faff;
 }
+.previosWinners:nth-child(even) {
+  background-color: #e9d8fd;
+}

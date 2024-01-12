@@ -5,6 +5,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Select,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Header } from "./Header";
@@ -12,10 +13,11 @@ import axios from "axios";
 
 export const Attendance = ({ setLoading, setError, setMode, userid }) => {
   const [form, setForm] = useState({
-    vevoxId: "0",
-    zoom: "0",
-    vevox: "0",
-    explanation: "0",
+    sessionDate: "",
+    zoom: "",
+    grade: "",
+    explanation: "",
+    winner: "",
   });
 
   const handleAttendanceForm = async (e) => {
@@ -28,13 +30,14 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
   const handleFormSubmit = async (formData, userid) => {
     try {
       setLoading(true);
-      const url = `https://backend.wisechamps.com/teachers/attendance`;
+      const url = `http://localhost:8080/teachers/attendance`;
       const res = await axios.post(url, {
         contactId: userid,
-        vevoxId: formData.vevoxId,
+        sessionDate: formData.sessionDate,
         zoom: formData.zoom,
-        vevox: formData.vevox,
+        grade: formData.grade,
         explanation: formData.explanation,
+        winner: formData.winner,
       });
       const mode = res.data.mode;
       setMode(mode);
@@ -65,14 +68,14 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
         </Heading>
         <Box>
           <form>
-            <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
+            <FormControl isRequired marginBottom={"2rem"}>
               <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
-                Vevox Session ID
+                Session Date
               </FormLabel>
               <Input
                 onChange={handleAttendanceForm}
-                type="number"
-                name="vevoxId"
+                type="date"
+                name="sessionDate"
                 border={"1px solid #8b8b8b"}
                 _focus={{
                   outline: "none",
@@ -84,7 +87,33 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
                 }}
               />
             </FormControl>
-            <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
+            <FormControl isRequired marginBottom={"2rem"}>
+              <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
+                Grade
+              </FormLabel>
+              <Select
+                placeholder="Select Grade"
+                onChange={handleAttendanceForm}
+                name="grade"
+                border={"1px solid #8b8b8b"}
+                _focus={{
+                  outline: "none",
+                  border: "1px solid rgba(129, 140, 248)",
+                }}
+                _hover={{
+                  outline: "none",
+                  border: "1px solid rgba(129, 140, 248)",
+                }}
+              >
+                <option value={"1;2"}>Grade 1 & 2</option>
+                <option value={"3"}>Grade 3</option>
+                <option value={"4"}>Grade 4</option>
+                <option value={"5"}>Grade 5</option>
+                <option value={"6"}>Grade 6</option>
+                <option value={"7;8"}>Grade 7 & 8</option>
+              </Select>
+            </FormControl>
+            <FormControl isRequired marginBottom={"2rem"}>
               <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
                 Zoom Meeting Strength
               </FormLabel>
@@ -103,14 +132,14 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
                 }}
               />
             </FormControl>
-            <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
+            <FormControl isRequired marginBottom={"2rem"}>
               <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
-                Vevox Strength
+                Explanation Meeting Strength
               </FormLabel>
               <Input
                 onChange={handleAttendanceForm}
                 type="number"
-                name="vevox"
+                name="explanation"
                 border={"1px solid #8b8b8b"}
                 _focus={{
                   outline: "none",
@@ -122,14 +151,14 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
                 }}
               />
             </FormControl>
-            <FormControl isRequired isInvalid={false} marginBottom={"2rem"}>
+            <FormControl isRequired marginBottom={"2rem"}>
               <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
-                Explanation Meeting Strength
+                Winner's Student ID
               </FormLabel>
               <Input
                 onChange={handleAttendanceForm}
                 type="number"
-                name="explanation"
+                name="winner"
                 border={"1px solid #8b8b8b"}
                 _focus={{
                   outline: "none",

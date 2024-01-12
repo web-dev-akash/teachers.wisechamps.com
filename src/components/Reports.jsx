@@ -21,7 +21,8 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { RaceBy } from "@uiball/loaders";
 
-export const Reports = ({ setMode, mode }) => {
+export const Reports = () => {
+  const [mode, setMode] = useState("");
   const [reportData, setReportData] = useState({
     grade: "",
     team: "",
@@ -37,6 +38,7 @@ export const Reports = ({ setMode, mode }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [report, setReport] = useState({});
+  const [winners, setWinners] = useState({});
   const [score, setScore] = useState(0);
   const [flag, setFlag] = useState(false);
 
@@ -52,21 +54,27 @@ export const Reports = ({ setMode, mode }) => {
   const getDailyReport = async (reportData) => {
     try {
       setLoading(true);
-      const url = `https://backend.wisechamps.com/teachers/report`;
+      // const url = `https://backend.wisechamps.com/teachers/report`;
+      const url = `http://localhost:8080/teachers/report`;
       const res = await axios.post(url, {
         grade: reportData.grade,
         team: reportData.team,
       });
       console.log(res.data);
       const data = res.data.reports;
-      const mode = res.data.mode;
+      const previousWinners = res.data.previousWinners;
       const score = res.data.totalScore;
       if (data?.length > 0) {
         setReport(data);
         setFlag(true);
         setScore(score);
+        if (previousWinners) {
+          setWinners(previousWinners);
+        } else {
+          setWinners({});
+        }
       } else {
-        setMode(mode);
+        setMode("noReports");
       }
       setLoading(false);
     } catch (error) {
@@ -81,14 +89,6 @@ export const Reports = ({ setMode, mode }) => {
       getDailyReport(reportData);
     }
   }, [reportData]);
-
-  if (error || mode?.includes("internalservererror")) {
-    return (
-      <div>
-        <h1>Something Went Wrong. Please Refresh</h1>
-      </div>
-    );
-  }
 
   return (
     <ChakraProvider
@@ -240,7 +240,7 @@ export const Reports = ({ setMode, mode }) => {
             </Box>
           )}
         </Box>
-        {!loading && flag && (
+        {!loading && flag ? (
           <>
             <Box>
               <Heading fontSize={"55px"}>
@@ -252,35 +252,93 @@ export const Reports = ({ setMode, mode }) => {
                 Team Score : {score}
               </Text>
             </Box>
-            <TableContainer
-              borderRadius={"10px"}
-              whiteSpace={"unset"}
-              maxWidth={"100%"}
-              margin={"25px auto"}
-              border={"2px solid rgba(129, 140, 248)"}
+
+            <Box
+              display={"flex"}
+              justifyContent={"flex-start"}
+              padding={"2rem"}
+              gap={"20px"}
             >
-              <Table variant="striped" colorScheme="purple">
-                <Thead>
-                  <Tr height={"50px"}>
-                    <Th fontSize={"15px"}>S.No.</Th>
-                    <Th fontSize={"15px"}>Student Name</Th>
-                    <Th fontSize={"15px"}>Student ID</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {report?.length > 0
-                    ? report.map(({ Student_ID, Student_Name }, index) => (
-                        <Tr key={Student_ID}>
-                          <Td>{index + 1}</Td>
-                          <Td textTransform={"capitalize"}>{Student_Name}</Td>
-                          <Td>{Student_ID}</Td>
-                        </Tr>
-                      ))
-                    : null}
-                </Tbody>
-              </Table>
-            </TableContainer>
+              <Box
+                display={winners?.length > 0 ? "block" : "none"}
+                flexBasis={"25%"}
+                border={"2px solid rgba(129, 140, 248)"}
+                borderRadius={"10px"}
+              >
+                <Text
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  height={"49px"}
+                  fontSize={"17px"}
+                  fontWeight={"600"}
+                >
+                  Previous Winners
+                </Text>
+                {winners?.length > 0 &&
+                  winners.map(({ id, Student_Name }) => (
+                    <Text
+                      key={id}
+                      display={"flex"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      height={"55px"}
+                      className="previosWinners"
+                      fontWeight={"500"}
+                      textTransform={"capitalize"}
+                    >
+                      {Student_Name}
+                    </Text>
+                  ))}
+              </Box>
+              <TableContainer
+                flexBasis={winners?.length > 0 ? "75%" : "100%"}
+                borderRadius={"10px"}
+                whiteSpace={"unset"}
+                maxWidth={"100%"}
+                border={"2px solid rgba(129, 140, 248)"}
+              >
+                <Table variant="striped" colorScheme="purple">
+                  <Thead>
+                    <Tr height={"50px"}>
+                      <Th fontSize={"15px"}>S.No.</Th>
+                      <Th fontSize={"15px"}>Student Name</Th>
+                      <Th fontSize={"15px"}>Student ID</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {report?.length > 0
+                      ? report.map(({ Student_ID, Student_Name }, index) => (
+                          <Tr key={Student_ID}>
+                            <Td>{index + 1}</Td>
+                            <Td textTransform={"capitalize"}>{Student_Name}</Td>
+                            <Td>{Student_ID}</Td>
+                          </Tr>
+                        ))
+                      : null}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </Box>
           </>
+        ) : (
+          mode === "noReports" &&
+          !loading && (
+            <div
+              className="email-not-found"
+              style={{
+                height: "70vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <p>
+                There are no Reports available right now <br />
+                Please try after 1-2 minutes.
+              </p>
+            </div>
+          )
         )}
       </Box>
     </ChakraProvider>

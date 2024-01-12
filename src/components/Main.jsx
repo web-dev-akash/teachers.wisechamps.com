@@ -112,8 +112,8 @@ export const Main = () => {
     return (
       <div className="email-not-found">
         <p>
-          The entered Vevox Session ID is not Valid <br />
-          Please use a valid Vevox Session ID and try again
+          There is no session found for the specified date <br />
+          Please use correct session date and try again
         </p>
         <div
           style={{
