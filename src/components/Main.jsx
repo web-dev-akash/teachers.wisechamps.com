@@ -88,6 +88,26 @@ export const Main = () => {
     );
   }
 
+  if (mode === "noattempt") {
+    return (
+      <div className="email-not-found">
+        <p>
+          Entered Winner's Student ID is not correct <br />
+          Please try again with correct id.
+        </p>
+        <div
+          style={{
+            marginTop: "10px",
+          }}
+        >
+          <button id="submit-btn" onClick={() => setMode("attendance")}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (mode === "nouser") {
     return (
       <div className="email-not-found">

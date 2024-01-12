@@ -29,6 +29,15 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
 
   const handleFormSubmit = async (formData, userid) => {
     try {
+      if (
+        !formData.sessionDate ||
+        !formData.zoom ||
+        !formData.grade ||
+        !formData.explanation ||
+        !formData.winner
+      ) {
+        return;
+      }
       setLoading(true);
       const url = `https://backend.wisechamps.com/teachers/attendance`;
       const res = await axios.post(url, {
