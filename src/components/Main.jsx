@@ -47,8 +47,6 @@ export const Main = () => {
     }
   };
 
-  console.log(user);
-
   useEffect(() => {
     if (email) {
       handleClick(email);
