@@ -30,7 +30,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
   const handleFormSubmit = async (formData, userid) => {
     try {
       setLoading(true);
-      const url = `http://localhost:8080/teachers/attendance`;
+      const url = `https://backend.wisechamps.com/teachers/attendance`;
       const res = await axios.post(url, {
         contactId: userid,
         sessionDate: formData.sessionDate,
