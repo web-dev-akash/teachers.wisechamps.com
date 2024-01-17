@@ -66,6 +66,7 @@ export const Dashboard = ({ setMode }) => {
           </CardBody>
         </Card>
         <Card
+          cursor={"pointer"}
           margin={"0 auto"}
           onClick={() => setMode("attendance")}
           width={["96%", "96%", "50%", "50%"]}

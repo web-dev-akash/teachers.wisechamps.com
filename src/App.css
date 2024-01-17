@@ -69,3 +69,16 @@
 .previosWinners:nth-child(even) {
   background-color: #e9d8fd;
 }
+
+#tagDate {
+  background-color: rgb(129, 140, 248);
+  color: white;
+}
+#subHeading {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  background-color: rgb(129, 140, 248);
+  padding: 10px 1.5rem;
+  border-radius: 10px;
+}
