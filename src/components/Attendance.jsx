@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   ChakraProvider,
   FormControl,
   FormLabel,
@@ -61,8 +62,17 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
   return (
     <ChakraProvider disableGlobalStyle={true}>
       <Header />
+      <Box position={"absolute"} top={"20px"} right={"20px"}>
+        <Button
+          color={"white"}
+          backgroundColor={"#4E47E5"}
+          onClick={() => setMode("reports")}
+        >
+          Reports
+        </Button>
+      </Box>
       <Box
-        marginTop={["4rem", "4rem", "2rem", "2rem", "2rem"]}
+        marginTop={["", "", "", "300px", "100px"]}
         width={["90%", "90%", "100%", "100%"]}
         maxWidth={"800px"}
         borderRadius={"20px"}

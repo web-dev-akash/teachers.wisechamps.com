@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Header } from "./Header";
 import {
   Box,
+  Button,
   ChakraProvider,
   Heading,
   Menu,
@@ -22,7 +23,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { RaceBy } from "@uiball/loaders";
 
-export const Reports = () => {
+export const Reports = ({ parentMode }) => {
   const [mode, setMode] = useState("");
   const [reportData, setReportData] = useState({
     grade: "",
@@ -100,8 +101,17 @@ export const Reports = () => {
       disableEnvironment={true}
     >
       <Header />
+      <Box position={"absolute"} top={"20px"} right={"20px"}>
+        <Button
+          color={"white"}
+          backgroundColor={"#4E47E5"}
+          onClick={() => parentMode("attendance")}
+        >
+          Attendance
+        </Button>
+      </Box>
       <Box
-        padding={"5rem 0"}
+        padding={"6rem 0 5rem 0"}
         width={["95%", "95%", "90%", "90%"]}
         height={["80vh", "80vh", "90vh", "100vh"]}
       >
@@ -218,7 +228,7 @@ export const Reports = () => {
           display={loading ? "flex" : "none"}
           justifyContent={"center"}
           alignItems={"center"}
-          height={["70vh", "70vh", "80vh", "80vh"]}
+          height={["70vh", "70vh", "60vh", "60vh"]}
         >
           {loading && (
             <Box
@@ -246,7 +256,7 @@ export const Reports = () => {
         {!loading && flag ? (
           <>
             <Box>
-              <Heading fontSize={"55px"}>
+              <Heading fontSize={"45px"}>
                 {grades[reportData.grade]}
                 {" - "}
                 {reportData.team}
@@ -277,7 +287,7 @@ export const Reports = () => {
             >
               <Box
                 display={winners?.length > 0 ? "block" : "none"}
-                flexBasis={"32%"}
+                flexBasis={"36%"}
                 border={"2px solid rgba(129, 140, 248)"}
                 borderRadius={"10px"}
               >
@@ -318,7 +328,7 @@ export const Reports = () => {
                   ))}
               </Box>
               <TableContainer
-                flexBasis={winners?.length > 0 ? "68%" : "100%"}
+                flexBasis={winners?.length > 0 ? "64%" : "100%"}
                 borderRadius={"10px"}
                 whiteSpace={"unset"}
                 maxWidth={"100%"}
