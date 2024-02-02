@@ -33,8 +33,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
         !formData.sessionDate ||
         !formData.zoom ||
         !formData.grade ||
-        !formData.explanation ||
-        !formData.winner
+        !formData.explanation
       ) {
         return;
       }
@@ -46,7 +45,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
         zoom: formData.zoom,
         grade: formData.grade,
         explanation: formData.explanation,
-        winner: formData.winner,
+        winner: formData.winner ? formData.winner : null,
       });
       const mode = res.data.mode;
       setMode(mode);
