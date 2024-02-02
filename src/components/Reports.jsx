@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Header } from "./Header";
 import {
   Box,
+  Button,
   ChakraProvider,
   Heading,
   Menu,
@@ -10,6 +11,7 @@ import {
   MenuList,
   Table,
   TableContainer,
+  Tag,
   Tbody,
   Td,
   Text,
@@ -21,7 +23,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { RaceBy } from "@uiball/loaders";
 
-export const Reports = () => {
+export const Reports = ({ parentMode }) => {
   const [mode, setMode] = useState("");
   const [reportData, setReportData] = useState({
     grade: "",
@@ -41,6 +43,7 @@ export const Reports = () => {
   const [winners, setWinners] = useState({});
   const [score, setScore] = useState(0);
   const [flag, setFlag] = useState(false);
+  const [sessionDateTime, setSessionDateTime] = useState("");
 
   const handleFilters = async (e) => {
     e.preventDefault();
@@ -65,6 +68,7 @@ export const Reports = () => {
       const previousWinners = res.data.previousWinners;
       const score = res.data.totalScore;
       if (data?.length > 0) {
+        setSessionDateTime(data[0].Session_Date_Time);
         setReport(data);
         setFlag(true);
         setScore(score);
@@ -97,9 +101,18 @@ export const Reports = () => {
       disableEnvironment={true}
     >
       <Header />
+      <Box position={"absolute"} top={"20px"} right={"20px"}>
+        <Button
+          color={"white"}
+          backgroundColor={"#4E47E5"}
+          onClick={() => parentMode("attendance")}
+        >
+          Attendance
+        </Button>
+      </Box>
       <Box
-        padding={"5rem 0"}
-        width={["95%", "95%", "80%", "80%"]}
+        padding={"6rem 0 5rem 0"}
+        width={["95%", "95%", "90%", "90%"]}
         height={["80vh", "80vh", "90vh", "100vh"]}
       >
         <Box
@@ -215,7 +228,7 @@ export const Reports = () => {
           display={loading ? "flex" : "none"}
           justifyContent={"center"}
           alignItems={"center"}
-          height={["70vh", "70vh", "80vh", "80vh"]}
+          height={["70vh", "70vh", "60vh", "60vh"]}
         >
           {loading && (
             <Box
@@ -243,25 +256,38 @@ export const Reports = () => {
         {!loading && flag ? (
           <>
             <Box>
-              <Heading fontSize={"55px"}>
+              <Heading fontSize={"45px"}>
                 {grades[reportData.grade]}
                 {" - "}
                 {reportData.team}
               </Heading>
-              <Text marginTop={"20px"} fontSize={"25px"} fontWeight={"600"}>
-                Team Score : {score}
-              </Text>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                marginTop={"10px"}
+              >
+                <Text id="subHeading">
+                  Date :{" "}
+                  {new Date(sessionDateTime).toLocaleDateString("en-US", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </Text>
+                <Text id="subHeading">Team Score : {score}</Text>
+              </Box>
             </Box>
 
             <Box
+              padding={"2rem 0"}
               display={"flex"}
               justifyContent={"flex-start"}
-              padding={"2rem"}
               gap={"20px"}
             >
               <Box
                 display={winners?.length > 0 ? "block" : "none"}
-                flexBasis={"25%"}
+                flexBasis={"36%"}
                 border={"2px solid rgba(129, 140, 248)"}
                 borderRadius={"10px"}
               >
@@ -273,12 +299,12 @@ export const Reports = () => {
                   fontSize={"17px"}
                   fontWeight={"600"}
                 >
-                  Previous Winners
+                  Lucky Quiz Winners
                 </Text>
                 {winners?.length > 0 &&
-                  winners.map(({ id, Student_Name }) => (
+                  winners.map(({ id, Student_Name, Quiz_Winner }) => (
                     <Text
-                      key={id}
+                      key={`${id}_${Quiz_Winner}`}
                       display={"flex"}
                       justifyContent={"center"}
                       alignItems={"center"}
@@ -286,13 +312,23 @@ export const Reports = () => {
                       className="previosWinners"
                       fontWeight={"500"}
                       textTransform={"capitalize"}
+                      gap={2}
                     >
-                      {Student_Name}
+                      <Text>{`${Student_Name}`}</Text>
+                      <Tag id="tagDate" size={"sm"}>
+                        {id}
+                      </Tag>
+                      <Tag id="tagDate" size={"sm"}>
+                        {`${new Date(Quiz_Winner).toLocaleDateString("en-US", {
+                          day: "2-digit",
+                          month: "short",
+                        })}`}
+                      </Tag>
                     </Text>
                   ))}
               </Box>
               <TableContainer
-                flexBasis={winners?.length > 0 ? "75%" : "100%"}
+                flexBasis={winners?.length > 0 ? "64%" : "100%"}
                 borderRadius={"10px"}
                 whiteSpace={"unset"}
                 maxWidth={"100%"}

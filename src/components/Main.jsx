@@ -160,14 +160,7 @@ export const Main = () => {
   }
 
   if (mode === "reports") {
-    return (
-      <Reports
-        mode={mode}
-        setMode={setMode}
-        setLoading={setLoading}
-        setError={setError}
-      />
-    );
+    return <Reports parentMode={setMode} />;
   }
 
   if (mode === "attendance") {
