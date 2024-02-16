@@ -78,6 +78,7 @@ export const Reports = ({ parentMode }) => {
           setWinners({});
         }
       } else {
+        setFlag(false);
         setMode("noReports");
       }
       setLoading(false);
@@ -101,7 +102,7 @@ export const Reports = ({ parentMode }) => {
       disableEnvironment={true}
     >
       <Header />
-      <Box position={"absolute"} top={"20px"} right={"20px"}>
+      <Box position={"absolute"} top={"20px"} right={"65px"}>
         <Button
           color={"white"}
           backgroundColor={"#4E47E5"}
@@ -209,16 +210,16 @@ export const Reports = ({ parentMode }) => {
               <MenuItem
                 name="team"
                 onClick={(e) => handleFilters(e)}
-                value={"Boys"}
+                value={"North"}
               >
-                Team Boys
+                Team North
               </MenuItem>
               <MenuItem
                 name="team"
                 onClick={(e) => handleFilters(e)}
-                value={"Girls"}
+                value={"South"}
               >
-                Team Girls
+                Team South
               </MenuItem>
             </MenuList>
           </Menu>
@@ -259,7 +260,7 @@ export const Reports = ({ parentMode }) => {
               <Heading fontSize={"45px"}>
                 {grades[reportData.grade]}
                 {" - "}
-                {reportData.team}
+                {`Team ${reportData.team}`}
               </Heading>
               <Box
                 display={"flex"}

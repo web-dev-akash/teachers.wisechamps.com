@@ -7,7 +7,7 @@ export const Header = () => {
       style={{
         position: "absolute",
         top: "20px",
-        left: "20px",
+        left: "65px",
       }}
       className="animate__animated animate__fadeInLeft"
     >
