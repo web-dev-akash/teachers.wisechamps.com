@@ -51,7 +51,7 @@ export const Dashboard = ({ setMode }) => {
                   Select Team
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  Select the team like <b>Boys</b> or <b>Girls</b>.
+                  Select the team.
                 </Text>
               </Box>
               <Box>
@@ -88,16 +88,15 @@ export const Dashboard = ({ setMode }) => {
                   Fill Details
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  Fill all the required details like Zoom, Vevox and Explation
-                  Strength
+                  Fill all the required details like Zoom and Explation Strength
                 </Text>
               </Box>
               <Box>
                 <Heading size="xs" textTransform="uppercase">
-                  Vevox Session ID
+                  Winner's ID
                 </Heading>
                 <Text pt="2" fontSize="sm">
-                  Enter the Vevox Session ID for today's quiz
+                  Enter the Winner's ID for today's quiz if required.
                 </Text>
               </Box>
               <Box>
