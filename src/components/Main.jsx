@@ -9,7 +9,7 @@ import { Attendance } from "./Attendance";
 export const Main = () => {
   const query = new URLSearchParams(window.location.search);
   const [email, setEmail] = useState(query.get("email"));
-  const [mode, setMode] = useState("reports");
+  const [mode, setMode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [user, setUser] = useState({});
