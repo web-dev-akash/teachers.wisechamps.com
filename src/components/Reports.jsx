@@ -102,7 +102,7 @@ export const Reports = ({ parentMode }) => {
       disableEnvironment={true}
     >
       <Header />
-      <Box position={"absolute"} top={"20px"} right={"65px"}>
+      <Box position={"absolute"} top={"20px"} right={"50px"}>
         <Button
           color={"white"}
           backgroundColor={"#4E47E5"}
@@ -112,7 +112,7 @@ export const Reports = ({ parentMode }) => {
         </Button>
       </Box>
       <Box
-        padding={"6rem 0 5rem 0"}
+        padding={"5rem 0 5rem 0"}
         width={["95%", "95%", "90%", "90%"]}
         height={["80vh", "80vh", "90vh", "100vh"]}
       >
@@ -125,7 +125,7 @@ export const Reports = ({ parentMode }) => {
         >
           <Menu>
             <MenuButton
-              px={4}
+              px={3}
               py={2}
               color={"#fff"}
               bg={"rgba(129, 140, 248)"}
@@ -137,6 +137,7 @@ export const Reports = ({ parentMode }) => {
                 border: "2px solid rgba(129, 140, 248)",
                 boxShadow: "0 0 0 5px rgb(129 140 248 / 30%)",
               }}
+              fontSize={"14px"}
             >
               <Text id="selectgrade">
                 Select Grade <ChevronDownIcon />
@@ -189,7 +190,7 @@ export const Reports = ({ parentMode }) => {
           </Menu>
           <Menu>
             <MenuButton
-              px={4}
+              px={3}
               py={2}
               color={"#fff"}
               bg={"rgba(129, 140, 248)"}
@@ -201,6 +202,7 @@ export const Reports = ({ parentMode }) => {
                 border: "2px solid rgba(129, 140, 248)",
                 boxShadow: "0 0 0 5px rgb(129 140 248 / 30%)",
               }}
+              fontSize={"14px"}
             >
               <Text id="selectteam">
                 Select Team <ChevronDownIcon />
@@ -212,14 +214,14 @@ export const Reports = ({ parentMode }) => {
                 onClick={(e) => handleFilters(e)}
                 value={"North"}
               >
-                Team North
+                North & East India
               </MenuItem>
               <MenuItem
                 name="team"
                 onClick={(e) => handleFilters(e)}
                 value={"South"}
               >
-                Team South
+                Central, South & West India
               </MenuItem>
             </MenuList>
           </Menu>
@@ -257,10 +259,14 @@ export const Reports = ({ parentMode }) => {
         {!loading && flag ? (
           <>
             <Box>
-              <Heading fontSize={"45px"}>
+              <Heading fontSize={"35px"} margin={"20px 0"}>
                 {grades[reportData.grade]}
                 {" - "}
-                {`Team ${reportData.team}`}
+                {`Team ${
+                  reportData.team === "North"
+                    ? "North & East India"
+                    : "Central, South & West India"
+                }`}
               </Heading>
               <Box
                 display={"flex"}
@@ -288,7 +294,7 @@ export const Reports = ({ parentMode }) => {
             >
               <Box
                 display={winners?.length > 0 ? "block" : "none"}
-                flexBasis={"36%"}
+                flexBasis={"45%"}
                 border={"2px solid rgba(129, 140, 248)"}
                 borderRadius={"10px"}
               >
@@ -329,7 +335,7 @@ export const Reports = ({ parentMode }) => {
                   ))}
               </Box>
               <TableContainer
-                flexBasis={winners?.length > 0 ? "64%" : "100%"}
+                flexBasis={winners?.length > 0 ? "55%" : "100%"}
                 borderRadius={"10px"}
                 whiteSpace={"unset"}
                 maxWidth={"100%"}
