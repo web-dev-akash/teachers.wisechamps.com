@@ -56,8 +56,8 @@ export const Reports = ({ parentMode }) => {
   const getDailyReport = async (reportData) => {
     try {
       setLoading(true);
-      // const url = `https://backend.wisechamps.com/teachers/report`;
-      const url = `http://localhost:8080/teachers/report`;
+      const url = `https://backend.wisechamps.com/teachers/report`;
+      // const url = `http://localhost:8080/teachers/report`;
       const res = await axios.post(url, {
         grade: reportData.grade,
       });
