@@ -27,7 +27,6 @@ export const Reports = ({ parentMode }) => {
   const [mode, setMode] = useState("");
   const [reportData, setReportData] = useState({
     grade: "",
-    team: "",
   });
   const [grades, setGrades] = useState({
     "1;2": "Grade 1 & 2",
@@ -57,11 +56,10 @@ export const Reports = ({ parentMode }) => {
   const getDailyReport = async (reportData) => {
     try {
       setLoading(true);
-      const url = `https://backend.wisechamps.com/teachers/report`;
-      // const url = `http://localhost:8080/teachers/report`;
+      // const url = `https://backend.wisechamps.com/teachers/report`;
+      const url = `http://localhost:8080/teachers/report`;
       const res = await axios.post(url, {
         grade: reportData.grade,
-        team: reportData.team,
       });
       console.log(res.data);
       const data = res.data.reports;
@@ -90,7 +88,7 @@ export const Reports = ({ parentMode }) => {
   };
 
   useEffect(() => {
-    if (reportData.grade && reportData.team) {
+    if (reportData.grade) {
       getDailyReport(reportData);
     }
   }, [reportData]);
@@ -102,15 +100,7 @@ export const Reports = ({ parentMode }) => {
       disableEnvironment={true}
     >
       <Header />
-      <Box position={"absolute"} top={"20px"} right={"50px"}>
-        <Button
-          color={"white"}
-          backgroundColor={"#4E47E5"}
-          onClick={() => parentMode("attendance")}
-        >
-          Attendance
-        </Button>
-      </Box>
+
       <Box
         padding={"5rem 0 5rem 0"}
         width={["95%", "95%", "90%", "90%"]}
@@ -188,43 +178,15 @@ export const Reports = ({ parentMode }) => {
               </MenuItem>
             </MenuList>
           </Menu>
-          <Menu>
-            <MenuButton
-              px={3}
-              py={2}
-              color={"#fff"}
-              bg={"rgba(129, 140, 248)"}
-              borderRadius={"10px"}
-              _expanded={{ bg: "white", color: "#000" }}
-              transition={"0.5s ease"}
-              border={"2px solid rgba(129, 140, 248)"}
-              _hover={{
-                border: "2px solid rgba(129, 140, 248)",
-                boxShadow: "0 0 0 5px rgb(129 140 248 / 30%)",
-              }}
-              fontSize={"14px"}
+          <Box>
+            <Button
+              color={"white"}
+              backgroundColor={"rgba(129, 140, 248)"}
+              onClick={() => parentMode("attendance")}
             >
-              <Text id="selectteam">
-                Select Team <ChevronDownIcon />
-              </Text>
-            </MenuButton>
-            <MenuList border={"2px solid rgba(129, 140, 248)"}>
-              <MenuItem
-                name="team"
-                onClick={(e) => handleFilters(e)}
-                value={"North"}
-              >
-                North & East India
-              </MenuItem>
-              <MenuItem
-                name="team"
-                onClick={(e) => handleFilters(e)}
-                value={"South"}
-              >
-                Central, South & West India
-              </MenuItem>
-            </MenuList>
-          </Menu>
+              Attendance
+            </Button>
+          </Box>
         </Box>
         <Box
           width={"100%"}
@@ -259,15 +221,7 @@ export const Reports = ({ parentMode }) => {
         {!loading && flag ? (
           <>
             <Box>
-              <Heading fontSize={"35px"} margin={"20px 0"}>
-                {grades[reportData.grade]}
-                {" - "}
-                {`Team ${
-                  reportData.team === "North"
-                    ? "North & East India"
-                    : "Central, South & West India"
-                }`}
-              </Heading>
+              <Heading fontSize={"35px"}>{grades[reportData.grade]}</Heading>
               <Box
                 display={"flex"}
                 justifyContent={"space-between"}
@@ -282,7 +236,7 @@ export const Reports = ({ parentMode }) => {
                     year: "numeric",
                   })}
                 </Text>
-                <Text id="subHeading">Team Score : {score}</Text>
+                <Text id="subHeading">Total Score : {score}</Text>
               </Box>
             </Box>
 
@@ -294,7 +248,7 @@ export const Reports = ({ parentMode }) => {
             >
               <Box
                 display={winners?.length > 0 ? "block" : "none"}
-                flexBasis={"45%"}
+                flexBasis={"25%"}
                 border={"2px solid rgba(129, 140, 248)"}
                 borderRadius={"10px"}
               >
@@ -315,27 +269,33 @@ export const Reports = ({ parentMode }) => {
                       display={"flex"}
                       justifyContent={"center"}
                       alignItems={"center"}
-                      height={"55px"}
+                      flexDirection={"column"}
+                      height={"60px"}
                       className="previosWinners"
                       fontWeight={"500"}
                       textTransform={"capitalize"}
-                      gap={2}
+                      gap={"3px"}
                     >
                       <Text>{`${Student_Name}`}</Text>
-                      <Tag id="tagDate" size={"sm"}>
-                        {id}
-                      </Tag>
-                      <Tag id="tagDate" size={"sm"}>
-                        {`${new Date(Quiz_Winner).toLocaleDateString("en-US", {
-                          day: "2-digit",
-                          month: "short",
-                        })}`}
-                      </Tag>
+                      <Box>
+                        <Tag id="tagDate" size={"sm"} mr={2}>
+                          {id}
+                        </Tag>
+                        <Tag id="tagDate" size={"sm"}>
+                          {`${new Date(Quiz_Winner).toLocaleDateString(
+                            "en-US",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                            }
+                          )}`}
+                        </Tag>
+                      </Box>
                     </Text>
                   ))}
               </Box>
               <TableContainer
-                flexBasis={winners?.length > 0 ? "55%" : "100%"}
+                flexBasis={winners?.length > 0 ? "75%" : "100%"}
                 borderRadius={"10px"}
                 whiteSpace={"unset"}
                 maxWidth={"100%"}
