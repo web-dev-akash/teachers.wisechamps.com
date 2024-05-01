@@ -11,74 +11,166 @@
     height: 85vh;
   }
 }
-.main {
-  text-align: left;
-  max-width: 320px;
-  width: 320px;
-  padding: 2rem 2rem 2.5rem 2rem;
-  border-radius: 15px;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
-    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
-}
-.main .input {
-  padding: 10px;
-  width: 100%;
-  border-radius: 10px;
-  margin-top: 10px;
-  border: 2px solid rgba(129, 140, 248);
-  outline: none;
-  background-color: #f5faff;
-  color: #0d0c22;
-  transition: 0.5s ease;
-  margin-bottom: 5px;
-}
-.main .input::placeholder {
-  color: #8698b1;
-}
-.main .input:focus,
-.main .input:hover {
-  outline: none;
-  border-color: rgba(129, 140, 248);
-  background-color: #fff;
-  box-shadow: 0 0 0 5px rgb(129 140 248 / 30%);
-}
-.main .form p {
-  font-size: 12px;
-  color: red;
-  margin-bottom: 10px;
-}
 
 #submit-btn {
   border: 2px solid transparent;
   padding: 10px;
   border-radius: 10px;
-  background-color: rgba(129, 140, 248);
+  background-color: #5853fc;
   color: white;
   font-weight: 600;
   cursor: pointer;
   transition: 0.5s ease;
 }
+
 #submit-btn:hover,
 #submit-btn:focus {
   outline: none;
   color: black;
-  border-color: rgba(129, 140, 248);
-  box-shadow: 0 0 0 5px rgb(129 140 248 / 30%);
+  border-color: #5853fc;
+  box-shadow: 0 0 0 5px #5853fc30;
   background-color: #f5faff;
 }
+
 .previosWinners:nth-child(even) {
   background-color: #e9d8fd;
 }
 
 #tagDate {
-  background-color: rgb(129, 140, 248);
+  background-color: #5853fc;
   color: white;
 }
 #subHeading {
   font-size: 15px;
   font-weight: 600;
   color: white;
-  background-color: rgb(129, 140, 248);
+  background-color: #5853fc;
   padding: 10px 1.5rem;
   border-radius: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 10px;
+  box-shadow: 0 0 20px;
+  padding: 30px;
+  width: 450px;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+::placeholder {
+  font-family: "Poppins", sans-serif;
+}
+
+.form button {
+  align-self: flex-end;
+}
+
+.flex-column > label {
+  color: #151717;
+  font-weight: 600;
+}
+
+.inputForm {
+  position: relative;
+  border: 1.5px solid #ecedec;
+  border-radius: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  transition: 0.2s ease-in-out;
+}
+
+.input {
+  margin-left: 10px;
+  border-radius: 10px;
+  border: none;
+  width: 85%;
+  height: 100%;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.inputForm:focus-within {
+  border: 1.5px solid #2d79f3;
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.flex-row > div {
+  margin-top: 5px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.flex-row > div input,
+.flex-row > div label {
+  cursor: pointer;
+}
+.flex-row > div > label {
+  font-size: 14px;
+  color: black;
+  font-weight: 400;
+}
+
+.button-submit {
+  margin: 15px 0 10px 0;
+  background-color: #5853fc;
+  border: 2px solid transparent;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 10px;
+  height: 50px;
+  width: 100%;
+  cursor: pointer;
+  transition: 0.5s ease;
+}
+
+.button-submit:hover {
+  outline: none;
+  color: black;
+  border-color: #5853fc;
+  box-shadow: 0 0 0 5px #5853fc30;
+  background-color: #f5faff;
+}
+
+.p {
+  text-align: center;
+  color: black;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.btn {
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  gap: 10px;
+  border: 1px solid #ededef;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.btn:hover {
+  border: 1px solid #2d79f3;
 }

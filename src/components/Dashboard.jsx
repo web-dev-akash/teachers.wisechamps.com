@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -13,9 +14,19 @@ import {
 } from "@chakra-ui/react";
 import { Header } from "./Header";
 export const Dashboard = ({ setMode }) => {
+  const logoutUser = () => {
+    setMode(null);
+    localStorage.removeItem("wise_email");
+    localStorage.removeItem("wise_pass");
+  };
   return (
     <ChakraProvider disableGlobalStyle={true} disableEnvironment={true}>
       <Header />
+      <Box position={"absolute"} top={"20px"} right={"5%"}>
+        <Button id="submit-btn" onClick={logoutUser}>
+          Logout
+        </Button>
+      </Box>
       <Flex
         gap={[5, 5, 5, 10]}
         flexDirection={["column", "column", "row", "row"]}
@@ -46,14 +57,14 @@ export const Dashboard = ({ setMode }) => {
                   Select the grade for which you want to see the report.
                 </Text>
               </Box>
-              <Box>
+              {/* <Box>
                 <Heading size="xs" textTransform="uppercase">
                   Select Team
                 </Heading>
                 <Text pt="2" fontSize="sm">
                   Select the team.
                 </Text>
-              </Box>
+              </Box> */}
               <Box>
                 <Heading size="xs" textTransform="uppercase">
                   Share the Report
