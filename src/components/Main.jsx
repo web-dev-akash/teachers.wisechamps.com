@@ -5,6 +5,7 @@ import { Dashboard } from "./Dashboard";
 import { Header } from "./Header";
 import { Reports } from "./Reports";
 import { Attendance } from "./Attendance";
+import { Loading } from "./Loading";
 
 export const Main = () => {
   const emailQuery = new URLSearchParams(window.location.search).get("email");
@@ -22,7 +23,7 @@ export const Main = () => {
   const [user, setUser] = useState({});
 
   const emailRegex = new RegExp(
-    /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
+    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
     "gm"
   );
 
@@ -40,8 +41,12 @@ export const Main = () => {
 
   const handleClick = async (e, { email, password }) => {
     e?.preventDefault();
+    if (e && !emailRegex.test(email)) {
+      alert("Please enter a valid Email");
+      return;
+    }
     if (!password) {
-      alert("Please enter a Valid Password");
+      alert("Please enter a valid Password");
       return;
     }
     if (remember) {
@@ -73,28 +78,7 @@ export const Main = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div
-        id="loadingDiv"
-        style={{
-          width: "fit-content",
-        }}
-      >
-        <p
-          style={{
-            marginBottom: "10px",
-          }}
-        >
-          Loading Please Wait...
-        </p>
-        <RaceBy
-          size={300}
-          lineWeight={20}
-          speed={1.4}
-          color="rgba(129, 140, 248)"
-        />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error || mode?.includes("internalservererror") || mode === "error") {

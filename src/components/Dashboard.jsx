@@ -19,6 +19,7 @@ export const Dashboard = ({ setMode }) => {
     localStorage.removeItem("wise_email");
     localStorage.removeItem("wise_pass");
   };
+
   return (
     <ChakraProvider disableGlobalStyle={true} disableEnvironment={true}>
       <Header />

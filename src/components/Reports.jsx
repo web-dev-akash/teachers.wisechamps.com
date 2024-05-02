@@ -22,6 +22,7 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { RaceBy } from "@uiball/loaders";
+import { Loading } from "./Loading";
 
 export const Reports = ({ parentMode }) => {
   const [mode, setMode] = useState("");
@@ -118,13 +119,13 @@ export const Reports = ({ parentMode }) => {
               px={3}
               py={2}
               color={"#fff"}
-              bg={"rgba(129, 140, 248)"}
+              bg={"#5853fc"}
               borderRadius={"10px"}
               _expanded={{ bg: "white", color: "#000" }}
               transition={"0.5s ease"}
-              border={"2px solid rgba(129, 140, 248)"}
+              border={"2px solid #5853fc"}
               _hover={{
-                border: "2px solid rgba(129, 140, 248)",
+                border: "2px solid #5853fc",
                 boxShadow: "0 0 0 5px rgb(129 140 248 / 30%)",
               }}
               fontSize={"14px"}
@@ -133,7 +134,7 @@ export const Reports = ({ parentMode }) => {
                 Select Grade <ChevronDownIcon />
               </Text>
             </MenuButton>
-            <MenuList border={"2px solid rgba(129, 140, 248)"}>
+            <MenuList border={"2px solid #5853fc"}>
               <MenuItem
                 name="grade"
                 onClick={(e) => handleFilters(e)}
@@ -181,7 +182,7 @@ export const Reports = ({ parentMode }) => {
           <Box>
             <Button
               color={"white"}
-              backgroundColor={"rgba(129, 140, 248)"}
+              backgroundColor={"#5853fc"}
               onClick={() => parentMode("attendance")}
             >
               Attendance
@@ -195,28 +196,7 @@ export const Reports = ({ parentMode }) => {
           alignItems={"center"}
           height={["70vh", "70vh", "60vh", "60vh"]}
         >
-          {loading && (
-            <Box
-              id="loadingDiv"
-              style={{
-                width: "fit-content",
-              }}
-            >
-              <p
-                style={{
-                  marginBottom: "10px",
-                }}
-              >
-                Loading Please Wait...
-              </p>
-              <RaceBy
-                size={300}
-                lineWeight={20}
-                speed={1.4}
-                color="rgba(129, 140, 248)"
-              />
-            </Box>
-          )}
+          {loading && <Loading />}
         </Box>
         {!loading && flag ? (
           <>
@@ -248,9 +228,12 @@ export const Reports = ({ parentMode }) => {
             >
               <Box
                 display={winners?.length > 0 ? "block" : "none"}
-                flexBasis={"25%"}
-                border={"2px solid rgba(129, 140, 248)"}
+                flexBasis={"30%"}
+                border={"2px solid #5853fc"}
                 borderRadius={"10px"}
+                maxHeight={"80vh"}
+                overflowY={"scroll"}
+                className="winners"
               >
                 <Text
                   display={"flex"}
@@ -295,11 +278,11 @@ export const Reports = ({ parentMode }) => {
                   ))}
               </Box>
               <TableContainer
-                flexBasis={winners?.length > 0 ? "75%" : "100%"}
+                flexBasis={winners?.length > 0 ? "70%" : "100%"}
                 borderRadius={"10px"}
                 whiteSpace={"unset"}
                 maxWidth={"100%"}
-                border={"2px solid rgba(129, 140, 248)"}
+                border={"2px solid #5853fc"}
               >
                 <Table variant="striped" colorScheme="purple">
                   <Thead>
