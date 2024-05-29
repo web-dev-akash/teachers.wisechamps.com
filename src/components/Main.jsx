@@ -109,6 +109,26 @@ export const Main = () => {
     );
   }
 
+  if (mode === "duplicateAttendance") {
+    return (
+      <div className="email-not-found">
+        <h1>OOPS !</h1>
+        <p style={{ fontSize: "20px" }}>
+          Your Attendance for today is already marked
+        </p>
+        <div
+          style={{
+            marginTop: "10px",
+          }}
+        >
+          <button id="submit-btn" onClick={() => setMode("attendance")}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (mode === "nouser") {
     return (
       <div className="email-not-found">
