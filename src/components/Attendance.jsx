@@ -19,6 +19,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
     zoom: "",
     grade: "",
     explanation: "",
+    criteria: "",
     winners: [""],
   });
 
@@ -37,7 +38,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
   const handleFormSubmit = async (e, form, userid) => {
     e.preventDefault();
     try {
-      const { sessionDate, zoom, grade, explanation, winners } = form;
+      const { sessionDate, zoom, grade, explanation, criteria, winners } = form;
       if (!sessionDate || !zoom || !grade || !explanation) {
         alert("Please Fill the Required Details");
         return;
@@ -50,6 +51,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
         zoom,
         grade,
         explanation,
+        criteria,
         winners,
       });
       const mode = res.data.mode;
@@ -172,6 +174,25 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
                 onChange={handleAttendanceForm}
                 type="number"
                 name="explanation"
+                border={"1px solid #8b8b8b"}
+                _focus={{
+                  outline: "none",
+                  border: "1px solid #5838fc",
+                }}
+                _hover={{
+                  outline: "none",
+                  border: "1px solid #5838fc",
+                }}
+              />
+            </FormControl>
+            <FormControl marginBottom={"1.3rem"}>
+              <FormLabel fontSize={["12px", "12px", "15px", "15px"]}>
+                Lucky Draw Criteria
+              </FormLabel>
+              <Input
+                onChange={handleAttendanceForm}
+                type="text"
+                name="criteria"
                 border={"1px solid #8b8b8b"}
                 _focus={{
                   outline: "none",

@@ -1,4 +1,3 @@
-import { RaceBy } from "@uiball/loaders";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Dashboard } from "./Dashboard";
@@ -8,14 +7,13 @@ import { Attendance } from "./Attendance";
 import { Loading } from "./Loading";
 
 export const Main = () => {
-  const emailQuery = new URLSearchParams(window.location.search).get("email");
   const localEmail = localStorage.getItem("wise_email");
   const localPass = localStorage.getItem("wise_pass");
   const [login, setLogin] = useState({
     email: localEmail || "",
     password: localPass || "",
   });
-  const [remember, setRemember] = useState(false);
+  const [remember, setRemember] = useState(true);
   const [showPass, setShowPass] = useState(false);
   const [mode, setMode] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -304,7 +302,12 @@ export const Main = () => {
         </div>
         <div className="flex-row">
           <div>
-            <input id="checkbox" type="checkbox" onChange={saveUserInfo} />
+            <input
+              checked={remember}
+              id="checkbox"
+              type="checkbox"
+              onChange={saveUserInfo}
+            />
             <label htmlFor="checkbox">Remember me</label>
           </div>
         </div>
