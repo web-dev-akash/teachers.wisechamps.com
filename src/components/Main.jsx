@@ -1,24 +1,27 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Dashboard } from "./Dashboard";
 import { Header } from "./Header";
-import { Reports } from "./Reports";
-import { Attendance } from "./Attendance";
 import { Loading } from "./Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTeacherByEmail } from "../Redux/action";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const Main = () => {
+  const navigate = useNavigate();
   const localEmail = localStorage.getItem("wise_email");
   const localPass = localStorage.getItem("wise_pass");
+
   const [login, setLogin] = useState({
     email: localEmail || "",
     password: localPass || "",
   });
+
   const [remember, setRemember] = useState(true);
   const [showPass, setShowPass] = useState(false);
-  const [mode, setMode] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [user, setUser] = useState({});
+
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loading);
+  const error = useSelector((state) => state.error);
+  const mode = useSelector((state) => state.mode);
 
   const emailRegex = new RegExp(
     /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
@@ -51,22 +54,7 @@ export const Main = () => {
       localStorage.setItem("wise_email", email);
       localStorage.setItem("wise_pass", password);
     }
-    try {
-      setMode("");
-      setLoading(true);
-      const url = `https://backend.wisechamps.com/teachers`;
-      const res = await axios.post(url, { email: email, password: password });
-      const mode = res.data.mode;
-      if (mode === "user") {
-        setUser(res.data.user);
-      }
-      setMode(mode);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setError(true);
-      console.log("error is ------------", error);
-    }
+    dispatch(fetchTeacherByEmail({ email, password }));
   };
 
   useEffect(() => {
@@ -87,46 +75,6 @@ export const Main = () => {
     );
   }
 
-  if (mode === "noattempt") {
-    return (
-      <div className="email-not-found">
-        <p>
-          Entered Winner's Student ID is not correct <br />
-          Please try again with correct id.
-        </p>
-        <div
-          style={{
-            marginTop: "10px",
-          }}
-        >
-          <button id="submit-btn" onClick={() => setMode("attendance")}>
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (mode === "duplicateAttendance") {
-    return (
-      <div className="email-not-found">
-        <h1>OOPS !</h1>
-        <p style={{ fontSize: "20px" }}>
-          Your Attendance for today is already marked
-        </p>
-        <div
-          style={{
-            marginTop: "10px",
-          }}
-        >
-          <button id="submit-btn" onClick={() => setMode("attendance")}>
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   if (mode === "nouser") {
     return (
       <div className="email-not-found">
@@ -139,71 +87,16 @@ export const Main = () => {
             marginTop: "10px",
           }}
         >
-          <button id="submit-btn" onClick={() => setMode("")}>
+          <button id="submit-btn" onClick={() => navigate("/login")}>
             Try Again
           </button>
         </div>
-      </div>
-    );
-  }
-
-  if (mode === "nosession") {
-    return (
-      <div className="email-not-found">
-        <p>
-          There is no session found for the specified date <br />
-          Please use correct session date and try again
-        </p>
-        <div
-          style={{
-            marginTop: "10px",
-          }}
-        >
-          <button id="submit-btn" onClick={() => setMode("attendance")}>
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (mode === "success") {
-    return (
-      <div className="email-not-found">
-        <h1>Thank You</h1>
-        <p>Your attendance has been marked successfully!</p>
       </div>
     );
   }
 
   if (mode === "user") {
-    return <Dashboard setMode={setMode} />;
-  }
-
-  if (mode === "reports") {
-    return <Reports parentMode={setMode} />;
-  }
-
-  if (mode === "attendance") {
-    return (
-      <Attendance
-        setError={setError}
-        setMode={setMode}
-        setLoading={setLoading}
-        userid={user.id}
-      />
-    );
-  }
-
-  if (mode === "noreport") {
-    return (
-      <div className="email-not-found">
-        <p>
-          There are no Reports available right now <br />
-          Please try after 1-2 minutes.
-        </p>
-      </div>
-    );
+    return <Navigate to={"/"} />;
   }
 
   return (

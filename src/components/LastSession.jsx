@@ -9,28 +9,38 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Select,
   Table,
   TableContainer,
-  Tag,
   Tbody,
   Td,
   Text,
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Loading } from "./Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReportByGrade } from "../Redux/action";
+import { fetchLastSessionByGrade } from "../Redux/action";
 import { useNavigate } from "react-router-dom";
 
-export const Reports = () => {
+export const LastSession = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const toast = useToast();
+  const error = useSelector((state) => state.error);
+  const loading = useSelector((state) => state.loading);
+  const status = useSelector((state) => state.lastSession.status);
+  const report = useSelector((state) => state.lastSession.users);
+  const [filteredReport, setFilteredReport] = useState([]);
+
   const [reportData, setReportData] = useState({
     grade: "",
   });
+
   const [grades, setGrades] = useState({
     "1;2": "Grade 1 & 2",
     3: "Grade 3",
@@ -39,11 +49,6 @@ export const Reports = () => {
     6: "Grade 6",
     "7;8": "Grade 7 & 8",
   });
-  const loading = useSelector((state) => state.loading);
-  const report = useSelector((state) => state.reports.users);
-  const winners = useSelector((state) => state.reports.previousWinners);
-  const score = useSelector((state) => state.reports.totalScore);
-  const status = useSelector((state) => state.reports.status);
 
   const handleFilters = async (e) => {
     e.preventDefault();
@@ -56,9 +61,21 @@ export const Reports = () => {
 
   const getDailyReport = async (reportData) => {
     try {
-      dispatch(fetchReportByGrade({ grade: reportData.grade }));
+      dispatch(fetchLastSessionByGrade({ grade: reportData.grade }));
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleFilterBySession = async (e) => {
+    const value = e.target.value;
+    if (value && value !== "") {
+      const newReport = report.filter(
+        (user) => Number(user.Credits) === Number(value)
+      );
+      setFilteredReport(newReport);
+    } else {
+      setFilteredReport(report);
     }
   };
 
@@ -67,6 +84,21 @@ export const Reports = () => {
       getDailyReport(reportData);
     }
   }, [reportData]);
+
+  useEffect(() => {
+    setFilteredReport(report);
+  }, [report]);
+
+  if (error) {
+    toast({
+      title: "Something Went Wrong",
+      description: "Please refresh and try again",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+      position: "top",
+    });
+  }
 
   return (
     <ChakraProvider
@@ -157,9 +189,9 @@ export const Reports = () => {
             <Button
               color={"white"}
               backgroundColor={"#5853fc"}
-              onClick={() => navigate("/attendance")}
+              onClick={() => navigate("/")}
             >
-              Attendance
+              Back
             </Button>
           </Box>
         </Box>
@@ -184,16 +216,21 @@ export const Reports = () => {
               >
                 <Text id="subHeading">
                   Date :{" "}
-                  {new Date(report[0].Session_Date_Time).toLocaleDateString(
-                    "en-US",
-                    {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                    }
-                  )}
+                  {new Date().toLocaleDateString("en-US", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </Text>
-                <Text id="subHeading">Total Score : {score}</Text>
+                <Box>
+                  <Select
+                    placeholder="Filter By Session"
+                    onChange={handleFilterBySession}
+                  >
+                    <option value="1">Last Session</option>
+                    <option value="2">2nd Last Session</option>
+                  </Select>
+                </Box>
               </Box>
             </Box>
 
@@ -203,59 +240,8 @@ export const Reports = () => {
               justifyContent={"flex-start"}
               gap={"20px"}
             >
-              <Box
-                display={winners?.length > 0 ? "block" : "none"}
-                flexBasis={"30%"}
-                border={"2px solid #5853fc"}
-                borderRadius={"10px"}
-                maxHeight={"80vh"}
-                overflowY={"scroll"}
-                className="winners"
-              >
-                <Text
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  height={"49px"}
-                  fontSize={"17px"}
-                  fontWeight={"600"}
-                >
-                  Lucky Quiz Winners
-                </Text>
-                {winners?.length > 0 &&
-                  winners.map(({ id, Student_Name, Quiz_Winner }) => (
-                    <Text
-                      key={`${id}_${Quiz_Winner}`}
-                      display={"flex"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      flexDirection={"column"}
-                      height={"60px"}
-                      className="previosWinners"
-                      fontWeight={"500"}
-                      textTransform={"capitalize"}
-                      gap={"3px"}
-                    >
-                      <Text>{`${Student_Name}`}</Text>
-                      <Box>
-                        <Tag id="tagDate" size={"sm"} mr={2}>
-                          {id}
-                        </Tag>
-                        <Tag id="tagDate" size={"sm"}>
-                          {`${new Date(Quiz_Winner).toLocaleDateString(
-                            "en-US",
-                            {
-                              day: "2-digit",
-                              month: "short",
-                            }
-                          )}`}
-                        </Tag>
-                      </Box>
-                    </Text>
-                  ))}
-              </Box>
               <TableContainer
-                flexBasis={winners?.length > 0 ? "70%" : "100%"}
+                flexBasis={"100%"}
                 borderRadius={"10px"}
                 whiteSpace={"unset"}
                 maxWidth={"100%"}
@@ -265,19 +251,40 @@ export const Reports = () => {
                   <Thead>
                     <Tr height={"50px"}>
                       <Th fontSize={"15px"}>S.No.</Th>
+                      <Th fontSize={"15px"}>Parent Name</Th>
                       <Th fontSize={"15px"}>Student Name</Th>
-                      <Th fontSize={"15px"}>Student ID</Th>
+                      <Th fontSize={"15px"}>Phone</Th>
+                      <Th fontSize={"15px"}>Session</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {report?.length > 0
-                      ? report.map(({ Student_ID, Student_Name }, index) => (
-                          <Tr key={Student_ID}>
-                            <Td>{index + 1}</Td>
-                            <Td textTransform={"capitalize"}>{Student_Name}</Td>
-                            <Td>{Student_ID}</Td>
-                          </Tr>
-                        ))
+                    {filteredReport?.length > 0
+                      ? filteredReport.map(
+                          (
+                            {
+                              Student_ID,
+                              Student_Name,
+                              Last_Name,
+                              Phone,
+                              Credits,
+                            },
+                            index
+                          ) => (
+                            <Tr key={Student_ID}>
+                              <Td>{index + 1}</Td>
+                              <Td textTransform={"capitalize"}>{Last_Name}</Td>
+                              <Td textTransform={"capitalize"}>
+                                {Student_Name}
+                              </Td>
+                              <Td textTransform={"capitalize"}>{Phone}</Td>
+                              <Td textTransform={"capitalize"}>
+                                {Credits === 1
+                                  ? "Last Session"
+                                  : "2nd Last Session"}
+                              </Td>
+                            </Tr>
+                          )
+                        )
                       : null}
                   </Tbody>
                 </Table>

@@ -6,16 +6,22 @@ import {
   CardBody,
   CardHeader,
   ChakraProvider,
-  Flex,
   Heading,
+  SimpleGrid,
   Stack,
   StackDivider,
   Text,
 } from "@chakra-ui/react";
 import { Header } from "./Header";
-export const Dashboard = ({ setMode }) => {
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userAdded } from "../Redux/reducer";
+
+export const Dashboard = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logoutUser = () => {
-    setMode(null);
+    dispatch(userAdded({}));
     localStorage.removeItem("wise_email");
     localStorage.removeItem("wise_pass");
   };
@@ -28,15 +34,16 @@ export const Dashboard = ({ setMode }) => {
           Logout
         </Button>
       </Box>
-      <Flex
-        gap={[5, 5, 5, 10]}
-        flexDirection={["column", "column", "row", "row"]}
+      <SimpleGrid
+        margin={"0 auto"}
+        padding={["20px", "20px", "30px", "20px", "80px"]}
+        width={"100%"}
+        spacing={2}
+        gridTemplateColumns={"repeat(3, 1fr)"}
         marginTop={["150px", "150px", 0, 0]}
       >
         <Card
-          margin={"0 auto"}
-          width={["96%", "96%", "50%", "50%"]}
-          onClick={() => setMode("reports")}
+          onClick={() => navigate("/reports")}
           transition={"0.5s ease"}
           cursor={"pointer"}
           border={"2px solid rgba(129, 140, 248)"}
@@ -79,9 +86,7 @@ export const Dashboard = ({ setMode }) => {
         </Card>
         <Card
           cursor={"pointer"}
-          margin={"0 auto"}
-          onClick={() => setMode("attendance")}
-          width={["96%", "96%", "50%", "50%"]}
+          onClick={() => navigate("/attendance")}
           transition={"0.5s ease"}
           border={"2px solid rgba(129, 140, 248)"}
           _hover={{
@@ -122,7 +127,44 @@ export const Dashboard = ({ setMode }) => {
             </Stack>
           </CardBody>
         </Card>
-      </Flex>
+        <Card
+          cursor={"pointer"}
+          onClick={() => navigate("/last-session")}
+          transition={"0.5s ease"}
+          border={"2px solid rgba(129, 140, 248)"}
+          _hover={{
+            border: "2px solid rgba(129, 140, 248)",
+            boxShadow: "0 0 0 5px rgb(129 140 248 / 30%)",
+          }}
+        >
+          <CardHeader>
+            <Heading size="md">Students with Last Session</Heading>
+          </CardHeader>
+
+          <CardBody>
+            <Stack divider={<StackDivider />} spacing="4">
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Select Grade
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  Select the grade for which you want to see the students with
+                  their last or 2nd last session.
+                </Text>
+              </Box>
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Engage with the Students
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  Share with the students that it will be there last or 2nd last
+                  session.
+                </Text>
+              </Box>
+            </Stack>
+          </CardBody>
+        </Card>
+      </SimpleGrid>
     </ChakraProvider>
   );
 };

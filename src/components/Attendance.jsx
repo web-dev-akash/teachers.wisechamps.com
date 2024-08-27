@@ -7,13 +7,28 @@ import {
   Heading,
   Input,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Header } from "./Header";
-import axios from "axios";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTeacherAttendance } from "../Redux/action";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Loading } from "./Loading";
 
-export const Attendance = ({ setLoading, setError, setMode, userid }) => {
+export const Attendance = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const toast = useToast();
+  const error = useSelector((state) => state.error);
+
+  const loading = useSelector((state) => state.loading);
+  const status = useSelector((state) => state.attendance.status);
+  const mode = useSelector((state) => state.attendance.mode);
+  const userid = useSelector((state) => state.user.id);
+
   const [form, setForm] = useState({
     sessionDate: "",
     zoom: "",
@@ -43,26 +58,33 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
         alert("Please Fill the Required Details");
         return;
       }
-      setLoading(true);
-      const url = `https://backend.wisechamps.com/teachers/attendance`;
-      const res = await axios.post(url, {
-        contactId: userid,
-        sessionDate,
-        zoom,
-        grade,
-        explanation,
-        criteria,
-        winners,
-      });
-      const mode = res.data.mode;
-      setMode(mode);
-      setLoading(false);
+      dispatch(
+        updateTeacherAttendance({
+          contactId: userid,
+          sessionDate,
+          zoom,
+          grade,
+          explanation,
+          criteria,
+          winners,
+        })
+      );
     } catch (error) {
-      setLoading(false);
-      setError(true);
       console.log(error);
     }
   };
+
+  if (error) {
+    toast({
+      title: "Something Went Wrong",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+      position: "top",
+    });
+    navigate("/");
+    return <></>;
+  }
 
   const addNewWinnerInput = () => {
     setForm({ ...form, winners: [...form.winners, ""] });
@@ -73,6 +95,47 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
     setForm({ ...form, winners });
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (status === 200) {
+    return (
+      <div className="email-not-found">
+        <h1>Thank You</h1>
+        <p>Your attendance has been marked successfully!</p>
+      </div>
+    );
+  }
+
+  if (mode === "nosession") {
+    return (
+      <div className="email-not-found">
+        <p>
+          There is no session found for the specified date <br />
+          Please use correct session date and try again
+        </p>
+        <div
+          style={{
+            marginTop: "10px",
+          }}
+        >
+          <button id="submit-btn" onClick={() => navigate("/reports")}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === 409) {
+    return <Navigate to={"/already-filled"} />;
+  }
+
+  if (mode === "noattempt") {
+    return <Navigate to={"/no-attempt"} />;
+  }
+
   return (
     <ChakraProvider disableGlobalStyle={true}>
       <Header />
@@ -80,7 +143,7 @@ export const Attendance = ({ setLoading, setError, setMode, userid }) => {
         <Button
           color={"white"}
           backgroundColor={"#4E47E5"}
-          onClick={() => setMode("reports")}
+          onClick={() => navigate("/reports")}
         >
           Reports
         </Button>
