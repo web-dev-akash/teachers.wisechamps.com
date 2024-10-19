@@ -5,6 +5,7 @@ import {
   Button,
   ChakraProvider,
   Heading,
+  Input,
   Menu,
   MenuButton,
   MenuItem,
@@ -24,12 +25,14 @@ import { Loading } from "./Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReportByGrade } from "../Redux/action";
 import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 
 export const Reports = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [reportData, setReportData] = useState({
     grade: "",
+    date: moment().format("YYYY-MM-DD"),
   });
   const [grades, setGrades] = useState({
     "1;2": "Grade 1 & 2",
@@ -51,22 +54,28 @@ export const Reports = () => {
     const innerText = e.target.innerText;
     const value = e.target.value;
     setReportData({ ...reportData, [name]: value });
-    document.getElementById(`select${name}`).innerText = innerText;
+    if (name === "grade") {
+      document.getElementById(`select${name}`).innerText = innerText;
+    }
   };
 
   const getDailyReport = async (reportData) => {
     try {
-      dispatch(fetchReportByGrade({ grade: reportData.grade }));
+      dispatch(
+        fetchReportByGrade({ grade: reportData.grade, date: reportData.date })
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log("Report Data", reportData);
+
   useEffect(() => {
-    if (reportData.grade) {
+    if (reportData.grade && reportData.date) {
       getDailyReport(reportData);
     }
-  }, [reportData]);
+  }, [reportData.grade, reportData.date]);
 
   return (
     <ChakraProvider
@@ -88,75 +97,95 @@ export const Reports = () => {
           justifyContent={"space-between"}
           width={"100%"}
         >
-          <Menu>
-            <MenuButton
-              px={3}
-              py={2}
-              color={"#fff"}
-              bg={"#5853fc"}
-              borderRadius={"10px"}
-              _expanded={{ bg: "white", color: "#000" }}
-              transition={"0.5s ease"}
-              border={"2px solid #5853fc"}
-              _hover={{
-                border: "2px solid #5853fc",
-                boxShadow: "0 0 0 5px rgb(129 140 248 / 30%)",
-              }}
-              fontSize={"14px"}
-            >
-              <Text id="selectgrade">
-                Select Grade <ChevronDownIcon />
-              </Text>
-            </MenuButton>
-            <MenuList border={"2px solid #5853fc"}>
-              <MenuItem
-                name="grade"
-                onClick={(e) => handleFilters(e)}
-                value={"1;2"}
+          <Box display={"flex"} alignItems={"center"} gap={2}>
+            <Menu>
+              <MenuButton
+                px={3}
+                py={2}
+                color={"#fff"}
+                bg={"#5853fc"}
+                borderRadius={"10px"}
+                _expanded={{ bg: "white", color: "#000" }}
+                transition={"0.5s ease"}
+                border={"2px solid #5853fc"}
+                _hover={{
+                  border: "2px solid #5853fc",
+                  boxShadow: "0 0 0 5px rgb(129 140 248 / 30%)",
+                }}
+                fontSize={"14px"}
               >
-                Grade 1 & 2
-              </MenuItem>
-              <MenuItem
-                name="grade"
-                onClick={(e) => handleFilters(e)}
-                value={"3"}
-              >
-                Grade 3
-              </MenuItem>
-              <MenuItem
-                name="grade"
-                onClick={(e) => handleFilters(e)}
-                value={"4"}
-              >
-                Grade 4
-              </MenuItem>
-              <MenuItem
-                name="grade"
-                onClick={(e) => handleFilters(e)}
-                value={"5"}
-              >
-                Grade 5
-              </MenuItem>
-              <MenuItem
-                name="grade"
-                onClick={(e) => handleFilters(e)}
-                value={"6"}
-              >
-                Grade 6
-              </MenuItem>
-              <MenuItem
-                name="grade"
-                onClick={(e) => handleFilters(e)}
-                value={"7;8"}
-              >
-                Grade 7 & 8
-              </MenuItem>
-            </MenuList>
-          </Menu>
+                <Text id="selectgrade">
+                  Select Grade <ChevronDownIcon />
+                </Text>
+              </MenuButton>
+              <MenuList border={"2px solid #5853fc"}>
+                <MenuItem
+                  name="grade"
+                  onClick={(e) => handleFilters(e)}
+                  value={"1;2"}
+                >
+                  Grade 1 & 2
+                </MenuItem>
+                <MenuItem
+                  name="grade"
+                  onClick={(e) => handleFilters(e)}
+                  value={"3"}
+                >
+                  Grade 3
+                </MenuItem>
+                <MenuItem
+                  name="grade"
+                  onClick={(e) => handleFilters(e)}
+                  value={"4"}
+                >
+                  Grade 4
+                </MenuItem>
+                <MenuItem
+                  name="grade"
+                  onClick={(e) => handleFilters(e)}
+                  value={"5"}
+                >
+                  Grade 5
+                </MenuItem>
+                <MenuItem
+                  name="grade"
+                  onClick={(e) => handleFilters(e)}
+                  value={"6"}
+                >
+                  Grade 6
+                </MenuItem>
+                <MenuItem
+                  name="grade"
+                  onClick={(e) => handleFilters(e)}
+                  value={"7;8"}
+                >
+                  Grade 7 & 8
+                </MenuItem>
+              </MenuList>
+            </Menu>
+            <Box>
+              <Input
+                type="date"
+                name="date"
+                id="name"
+                value={reportData.date}
+                onChange={(e) => handleFilters(e)}
+                style={{
+                  cursor: "pointer",
+                  border: "1px solid #5838fc",
+                  color: "#5838fc",
+                  fontWeight: 600,
+                }}
+              />
+            </Box>
+          </Box>
           <Box>
             <Button
               color={"white"}
               backgroundColor={"#5853fc"}
+              _hover={{
+                opacity: 0.8,
+              }}
               onClick={() => navigate("/attendance")}
             >
               Attendance

@@ -26,7 +26,7 @@ export const fetchTeacherByEmail = createAsyncThunk(
 
 export const fetchReportByGrade = createAsyncThunk(
   "teacher/fetchReportByGrade",
-  async ({ grade }) => {
+  async ({ grade, date }) => {
     const url = `https://backend.wisechamps.com/teachers/report`;
     const config = {
       headers: {
@@ -38,6 +38,7 @@ export const fetchReportByGrade = createAsyncThunk(
       url,
       {
         grade: grade,
+        date: date,
       },
       config
     );
